@@ -13,4 +13,5 @@ also check out our old website [bundeshaushalt.de](https://www.bundeshaushalt.de
 ## open data 🔓
 
 - [use our public api](https://github.com/bundesAPI/bundeshaushalt-api)
-- download json data dumps (coming soon!)
+- [download json data dump](./_file/data/haushalt-via-csv.json)
+- have fun with the data downloads on [bundeshaushalt.de](https://www.bundeshaushalt.de/DE/Download-Portal/download-portal.html)
