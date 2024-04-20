@@ -116,3 +116,10 @@ node
 
 display(svg.node())
 ```
+
+## Open data 🔓🎈
+
+- [Use our public API](https://github.com/bundesAPI/bundeshaushalt-api)
+- Download JSON data dumps:
+  - Simplified (TODO)
+  - Comprehensive (TODO)
