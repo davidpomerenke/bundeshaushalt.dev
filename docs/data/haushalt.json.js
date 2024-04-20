@@ -17,6 +17,7 @@ const fetch = url => axios({
     .catch(error => console.error(error));
 
 const cachedFetch = async (url) => {
+    if (!fs.existsSync('./cache')) fs.mkdirSync('./cache');
     const cache = `./cache/${url.replace(/[^a-zA-Z0-9]/g, '_')}.json`;
     try {
         const text = fs.readFileSync(cache, 'utf8');
