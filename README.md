@@ -2,6 +2,14 @@
 
 see also [bundeshaushalt-api](https://github.com/bundesAPI/bundeshaushalt-api)
 
+## roadmap
+
+- [x] support for multiple years
+- [ ] bar chart with comparison over time
+- [ ] data table
+- [ ] search
+- [ ] integrate more fine-grained data
+
 ## Project structure
 
 This is an [Observable Framework](https://observablehq.com/framework) project. To start the local preview server, run:
