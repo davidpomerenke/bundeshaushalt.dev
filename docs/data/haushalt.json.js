@@ -23,7 +23,6 @@ const cachedFetch = async (url) => {
         const text = fs.readFileSync(cache, 'utf8');
         return JSON.parse(text);
     } catch (e) {
-        console.log(`fetching ${url}`)
         const data = await fetch(url);
         fs.writeFileSync(cache, JSON.stringify(data, null, 2));
         return data;

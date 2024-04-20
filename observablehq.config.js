@@ -23,7 +23,7 @@ export default {
   // theme: "default", // try "light", "dark", "slate", etc.
   // header: "", // what to show in the header (HTML)
   footer: "Made by Bundesregierung ❤️ Civil Society. <a href='https://github.com/davidpomerenke/bundeshaushalt.dev'>Contribute on Github.</a>", // what to show in the footer (HTML)
-  toc: true, // whether to show the table of contents
+  toc: false, // whether to show the table of contents
   pager: false, // whether to show previous & next links in the footer
   // root: "docs", // path to the source root for preview
   // output: "dist", // path to the output root for build
