@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { writeFileSync } from 'fs';
+import fs from "fs";
 import "dotenv/config";
 const apikey = process.env.ZENROWS_API_KEY;
 
@@ -19,13 +19,30 @@ const fetch = url => axios({
 const cachedFetch = async (url) => {
     const cache = `./cache/${url.replace(/[^a-zA-Z0-9]/g, '_')}.json`;
     try {
-        return require(cache);
+        const text = fs.readFileSync(cache, 'utf8');
+        return JSON.parse(text);
     } catch (e) {
+        console.log(`fetching ${url}`)
         const data = await fetch(url);
-        writeFileSync(cache, JSON.stringify(data, null, 2));
+        fs.writeFileSync(cache, JSON.stringify(data, null, 2));
         return data;
     }
 }
 
-const data = await cachedFetch(url(23));
+const loadData = async (id) => {
+    const data = await cachedFetch(url(id));
+    delete data.meta;
+    delete data.parents;
+    delete data.related; // TODO: this actually contains additional information about the hierarchy that should be integrated!
+    if (!data.children) {
+        return data;
+    }
+    for (const i in data.children) {
+        data.children[i] = await loadData(data.children[i].id);
+    }
+    return data;
+}
+
+const data = await loadData(23);
 process.stdout.write(JSON.stringify(data, null, 2));
+// fs.writeFileSync('./docs/.observablehq/cache/data/haushalt.json', JSON.stringify(data, null, 2));
