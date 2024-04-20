@@ -1,5 +1,6 @@
 ---
 theme: dashboard
+title: ""
 ---
 
 # Bundeshaushalt 🚀
