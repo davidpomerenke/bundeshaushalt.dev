@@ -53,9 +53,9 @@ const name = d =>
 // Create the SVG container.
 const svg = d3
   .create('svg')
-  .attr('viewBox', [0.5, -30.5, width, height + 30])
+  .attr('viewBox', [0.5, -50.5, width, height + 50])
   .attr('width', width)
-  .attr('height', height + 30)
+  .attr('height', height + 50)
   .attr('style', 'max-width: 100%; height: auto;')
   .style('font', '10px sans-serif')
 
@@ -90,9 +90,7 @@ function render(group, root) {
     .attr('font-weight', d => (d === root ? 'bold' : null))
     .selectAll('tspan')
     .data(d =>
-      (d === root ? name(d) : d.data.name)
-        .split(/(?=[A-Z][^A-Z])/g)
-        .concat(format(d.value))
+      (d === root ? name(d) : d.data.name).split("/").concat(format(d.value))
     )
     .join('tspan')
     .attr('x', 3)
@@ -115,11 +113,11 @@ function position(group, root) {
   group
     .selectAll('g')
     .attr('transform', d =>
-      d === root ? `translate(0,-30)` : `translate(${x(d.x0)},${y(d.y0)})`
+      d === root ? `translate(0,-50)` : `translate(${x(d.x0)},${y(d.y0)})`
     )
     .select('rect')
     .attr('width', d => (d === root ? width : x(d.x1) - x(d.x0)))
-    .attr('height', d => (d === root ? 30 : y(d.y1) - y(d.y0)))
+    .attr('height', d => (d === root ? 50 : y(d.y1) - y(d.y0)))
 }
 
 // When zooming in, draw the new nodes on top, and fade them in.
