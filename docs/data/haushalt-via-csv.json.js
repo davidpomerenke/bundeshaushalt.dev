@@ -53,7 +53,7 @@ const getData = async year => {
                                         a['kapitel-text'] === kapitel &&
                                         a['titel-text'] === titel
                                 )
-                                .map(a => a['soll ']) // sic!
+                                .map(a => a['soll'] || a['soll '])
                                 .reduce(sum, 0)
                         }))
                 }))
