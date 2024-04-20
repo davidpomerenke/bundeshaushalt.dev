@@ -1,10 +1,8 @@
 ---
 theme: dashboard
-title: ""
+title: visual 1
 toc: false
 ---
-
-# Bundeshaushalt 🚀
 
 ```js
 const data = FileAttachment('./data/haushalt.json').json()
@@ -117,10 +115,3 @@ node
 
 display(svg.node())
 ```
-
-## Open data 🔓🎈
-
-- [Use our public API](https://github.com/bundesAPI/bundeshaushalt-api)
-- Download JSON data dumps:
-  - Simplified (TODO)
-  - Comprehensive (TODO)

@@ -1,6 +1,6 @@
 # bundeshaushalt.dev
 
-See also [bundeshaushalt-api](https://github.com/bundesAPI/bundeshaushalt-api).
+see also [bundeshaushalt-api](https://github.com/bundesAPI/bundeshaushalt-api)
 
 ## Project structure
 
