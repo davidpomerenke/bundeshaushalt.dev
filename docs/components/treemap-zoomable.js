@@ -4,7 +4,7 @@
 import { uid } from "./uid.js"
 import * as d3 from "d3"
 
-export function makeTreemapZoomed(data) {
+export function makeTreemapZoomable(data) {
     // Specify the chart’s dimensions.
     const width = 928
     const height = 924
