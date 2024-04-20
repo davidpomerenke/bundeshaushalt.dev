@@ -1,5 +1,4 @@
-.DS_Store
+.env
+cache/
 dist/
-docs/.observablehq/cache/
 node_modules/
-yarn-error.log
