@@ -13,11 +13,13 @@ import { makeTreemapZoomable } from './components/treemap-zoomable.js'
 
 const data = FileAttachment('./data/haushalt-via-csv.json').json()
 const vis = view(Inputs.select(['zoomable treemap', 'nested treemap']))
+const year = view(Inputs.range([2019, 2024], {step:1, value: 2024}));
 ```
 
 ```js
-if (vis === "nested treemap") display(makeTreemapNested(data))
-else display(makeTreemapZoomable(data))
+const selectedData = data[year]
+if (vis === "zoomable treemap") display(makeTreemapZoomable(selectedData))
+else display(makeTreemapNested(selectedData))
 ```
 
 ## open data 🔓

@@ -4,7 +4,7 @@
 import { uid } from "./uid.js"
 import * as d3 from "d3"
 
-export function makeTreemapNested(hierarchy) {
+export function makeTreemapNested(data) {
     // Specify the chart’s dimensions.
     const width = 928
     const height = 1060
@@ -24,7 +24,7 @@ export function makeTreemapNested(hierarchy) {
                     .sum(d => d.value)
                     .sort((a, b) => b.value - a.value)
             )
-    const root = treemap(hierarchy)
+    const root = treemap(data)
 
     // Create the SVG container.
     const svg = d3
