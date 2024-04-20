@@ -4,7 +4,7 @@ see also [bundeshaushalt-api](https://github.com/bundesAPI/bundeshaushalt-api)
 
 ## roadmap
 
-- [ ] support for multiple years
+- [x] support for multiple years
 - [ ] bar chart with comparison over time
 - [ ] data table
 - [ ] search
