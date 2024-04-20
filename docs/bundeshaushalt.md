@@ -11,6 +11,9 @@ const data = FileAttachment('./data/haushalt.json').json()
 ```
 
 ```js
+// adapted from https://observablehq.com/@d3/nested-treemap
+// ISC License (c) Mike Bostock
+
 import {uid } from "./components/uid.js"
 
 // Specify the chart’s dimensions.
@@ -93,7 +96,6 @@ node
   .attr('clip-path', d => d.clipUid)
   .selectAll('tspan')
   .data(d => d.data.name.split(/(?=[A-Z][^A-Z])/g).concat(format(d.value)))
-  // .data(d => d.data.name) //TODO
   .join('tspan')
   .attr('fill-opacity', (d, i, nodes) => (i === nodes.length - 1 ? 0.7 : null))
   .text(d => d)

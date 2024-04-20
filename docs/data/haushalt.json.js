@@ -34,14 +34,16 @@ const loadData = async (id) => {
     delete data.meta;
     delete data.parents;
     delete data.related; // TODO: this actually contains additional information about the hierarchy that should be integrated!
-    data.value = data.detail.value;
     data.name = data.detail.label;
+    data.value_sum = data.detail.value;
     delete data.detail;
     if (!data.children) {
-        return data;
-    }
-    for (const i in data.children) {
-        data.children[i] = await loadData(data.children[i].id);
+        // we only want the "data" field at the lowest level
+        data.value = data.value_sum;
+    } else {
+        for (const i in data.children) {
+            data.children[i] = await loadData(data.children[i].id);
+        }
     }
     return data;
 }
