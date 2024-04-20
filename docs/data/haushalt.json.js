@@ -34,6 +34,9 @@ const loadData = async (id) => {
     delete data.meta;
     delete data.parents;
     delete data.related; // TODO: this actually contains additional information about the hierarchy that should be integrated!
+    data.value = data.detail.value;
+    data.name = data.detail.label;
+    delete data.detail;
     if (!data.children) {
         return data;
     }
