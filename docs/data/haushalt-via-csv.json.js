@@ -2,16 +2,17 @@ import { cachedFetch } from './http.js'
 import Papa from 'papaparse'
 import fs from 'fs'
 
-const csv = await cachedFetch(
-    'https://www.bundeshaushalt.de/static/daten/2024/soll/HH_2024.csv'
+const getCsv = year => cachedFetch(
+    `https://www.bundeshaushalt.de/static/daten/${year}/soll/HH_${year}.csv`
 )
+const csv = await getCsv(2024)
 const data = Papa.parse(csv, { header: true }).data
     .filter(a => a['einahmen-ausgaben'] === "A") // sic! 
 
 Array.prototype.unique = function () {
     return [...new Set(this)]
 }
-const sum = (a, b) => parseFloat(a) + parseFloat(b)
+const sum = (a, b) => parseFloat(a || 0) + parseFloat(b || 0)
 
 const hierarchy = data
     .map(a => a['einzelplan-text'])

@@ -1,7 +1,8 @@
 ---
 theme: dashboard
-title: ""
+title: ''
 toc: false
+style: style.css
 ---
 
 # bundeshaushalt.dev
