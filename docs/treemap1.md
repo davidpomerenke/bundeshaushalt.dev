@@ -5,7 +5,7 @@ toc: false
 ---
 
 ```js
-const data = FileAttachment('./data/haushalt.json').json()
+const data = FileAttachment('./data/haushalt-via-csv.json').json()
 ```
 
 ```js
