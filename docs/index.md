@@ -25,7 +25,7 @@ else display(makeTreemapNested(selectedData))
 ## open data 🔓
 
 - [use the public api](https://github.com/bundesAPI/bundeshaushalt-api)
-- [download json data dump](./_file/data/haushalt-via-csv.json)
+- [download json data dump](https://github.com/davidpomerenke/bundeshaushalt.dev/tree/gh-pages/dist/_file/data)
 
 ## legacy website
 
