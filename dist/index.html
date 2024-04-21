@@ -58,13 +58,13 @@
 import {define} from "./_observablehq/client.js";
 import {registerFile} from "./_observablehq/stdlib.js";
 
-registerFile("./data/haushalt-via-csv.json", {"name":"./data/haushalt-via-csv.json","mimeType":"application/json","path":"./_file/data/haushalt-via-csv.85b36628.json","lastModified":1713695737350});
+registerFile("./data/haushalt-via-csv.json", {"name":"./data/haushalt-via-csv.json","mimeType":"application/json","path":"./_file/data/haushalt-via-csv.85b36628.json","lastModified":1713697789751});
 
-define({id: "2ac16929", inputs: ["FileAttachment","view","Inputs"], outputs: ["makeTreemapNested","makeTreemapZoomable","data","vis","year"], body: async (FileAttachment,view,Inputs) => {
+define({id: "7f319856", inputs: ["FileAttachment","view","Inputs"], outputs: ["makeTreemapNested","makeTreemapZoomable","data","vis","year"], body: async (FileAttachment,view,Inputs) => {
 const [{makeTreemapNested}, {makeTreemapZoomable}] = await Promise.all([import("./_import/components/treemap-nested.c1ef3f8c.js"), import("./_import/components/treemap-zoomable.8ab6f871.js")]);
 
 const data = FileAttachment("./data/haushalt-via-csv.json").json()
-const vis = view(Inputs.select(['zoomable treemap', 'nested treemap']))
+const vis = view(Inputs.select(['nested treemap', 'zoomable treemap']))
 const year = view(Inputs.range([2019, 2024], {step:1, value: 2024}));
 return {makeTreemapNested,makeTreemapZoomable,data,vis,year};
 }});
@@ -80,17 +80,18 @@ return {selectedData};
 <div id="observablehq-center">
 <main id="observablehq-main" class="observablehq">
 <h1 id="bundeshaushalt.dev-%F0%9F%87%A9%F0%9F%87%AA%F0%9F%92%B0" tabindex="-1"><a class="observablehq-header-anchor" href="#bundeshaushalt.dev-%F0%9F%87%A9%F0%9F%87%AA%F0%9F%92%B0">bundeshaushalt.dev 🇩🇪💰</a></h1>
-<div id="cell-2ac16929" class="observablehq observablehq--block"></div>
+<div id="cell-7f319856" class="observablehq observablehq--block"></div>
 <div id="cell-2814c235" class="observablehq observablehq--block"></div>
 <h2 id="open-data-%F0%9F%94%93" tabindex="-1"><a class="observablehq-header-anchor" href="#open-data-%F0%9F%94%93">open data 🔓</a></h2>
 <ul>
 <li><a href="https://github.com/bundesAPI/bundeshaushalt-api" target="_blank" rel="noopener noreferrer">use the public api</a></li>
-<li><a href="https://github.com/davidpomerenke/bundeshaushalt.dev/tree/gh-pages/dist/_file/data" target="_blank" rel="noopener noreferrer">download json data dump</a></li>
+<li><a href="https://github.com/davidpomerenke/bundeshaushalt.dev/tree/gh-pages/dist/_file/data" target="_blank" rel="noopener noreferrer">download json data</a> (simplified and consistent)</li>
+<li><a href="https://www.bundeshaushalt.de/DE/Download-Portal/download-portal.html" target="_blank" rel="noopener noreferrer">download csv and xml data</a> (with more metadata, not fully consistent)</li>
 </ul>
-<h2 id="similar-projects" tabindex="-1"><a class="observablehq-header-anchor" href="#similar-projects">similar projects</a></h2>
+<h2 id="sister-projects" tabindex="-1"><a class="observablehq-header-anchor" href="#sister-projects">sister projects</a></h2>
 <ul>
-<li><a href="https://budget.g0v.it/" target="_blank" rel="noopener noreferrer">the italian budget</a> by g0v.it 🇮🇹</li>
-<li>our legacy website <a href="https://www.bundeshaushalt.de/DE/Bundeshaushalt-digital/bundeshaushalt-digital.html" target="_blank" rel="noopener noreferrer">bundeshaushalt.de</a>, with pie charts and relatively consistent <a href="https://www.bundeshaushalt.de/DE/Download-Portal/download-portal.html" target="_blank" rel="noopener noreferrer">csv and xml downloads</a></li>
+<li><a href="https://www.bundeshaushalt.de/DE/Bundeshaushalt-digital/bundeshaushalt-digital.html" target="_blank" rel="noopener noreferrer">bundeshaushalt.de</a> 👋</li>
+<li><a href="https://budget.g0v.it/" target="_blank" rel="noopener noreferrer">the italian budget</a> 🇮🇹</li>
 </ul>
 </main>
 <footer id="observablehq-footer">
