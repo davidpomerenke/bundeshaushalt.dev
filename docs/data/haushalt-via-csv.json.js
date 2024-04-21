@@ -55,6 +55,7 @@ const getData = async year => {
                                 )
                                 .map(a => a['soll'] || a['soll '])
                                 .reduce(sum, 0)
+                                .map(a => a * 1000)
                         }))
                 }))
         }))
