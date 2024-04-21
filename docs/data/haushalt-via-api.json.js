@@ -1,3 +1,7 @@
+// connect to the bundeshaushalt.de API and download the hierarchical data bit by bit
+// this is a lot of effort and only recommended for analyzing smaller parts of the budget
+// this project instead relies on the csv files, see haushalt-via-csv.json.js
+
 import { cachedFetch } from './http.js'
 
 const url = id =>

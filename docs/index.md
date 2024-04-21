@@ -27,8 +27,7 @@ else display(makeTreemapNested(selectedData))
 - [use the public api](https://github.com/bundesAPI/bundeshaushalt-api)
 - [download json data dump](https://github.com/davidpomerenke/bundeshaushalt.dev/tree/gh-pages/dist/_file/data)
 
-## legacy website
+## similar projects
 
-this website is currently still in development.
-
-you can find more information on our legacy website [bundeshaushalt.de](https://bundeshaushalt.de), including some [beautiful pie charts](https://www.bundeshaushalt.de/DE/Bundeshaushalt-digital/bundeshaushalt-digital.html) and some relatively consistent [csv and xml downloads](https://www.bundeshaushalt.de/DE/Download-Portal/download-portal.html).
+- [the italian budget](https://budget.g0v.it/) by g0v.it 🇮🇹
+- our legacy website [bundeshaushalt.de](https://www.bundeshaushalt.de/DE/Bundeshaushalt-digital/bundeshaushalt-digital.html), with pie charts and relatively consistent [csv and xml downloads](https://www.bundeshaushalt.de/DE/Download-Portal/download-portal.html)
