@@ -1,3 +1,6 @@
+// convert the csv downloads from bundeshaushalt.de to a hierarchical json format
+// note that the csvs are broken and sometimes contain too many delimiters, which we just ignore here
+
 import { cachedFetch } from './http.js'
 import Papa from 'papaparse'
 import fs from 'fs'
