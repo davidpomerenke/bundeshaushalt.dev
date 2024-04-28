@@ -13,13 +13,37 @@ import { makeTreemapZoomable } from './components/treemap-zoomable.js'
 
 const data = FileAttachment('./data/haushalt-via-csv.json').json()
 const vis = view(Inputs.select(['nested treemap', 'zoomable treemap']))
-const year = view(Inputs.range([2019, 2024], {step:1, value: 2024}));
+const year = view(Inputs.range([2019, 2024], { step: 1, value: 2024 }))
+const showChanges = view(Inputs.checkbox(['Show change relative to last year']))
+
 ```
+
+<!-- ```js
+const getChildren = a =>
+  new Set(
+    a['children']
+      .map(a => a.name) //.children.map(b => b.children.map(c => c.name)))
+    //   .flat(2)
+  )
+const a = getChildren(data[2024])
+const b = getChildren(data[2023])
+// get intersection
+function intersection(set1, set2) {
+  return new Set([...set1].filter(x => set2.has(x)))
+}
+display(intersection(a, b))
+// get difference
+function difference(set1, set2) {
+  return new Set([...set1].filter(x => !set2.has(x)))
+}
+display(difference(a, b))
+display(difference(b, a))
+``` -->
 
 ```js
 const selectedData = data[year]
-if (vis === "zoomable treemap") display(makeTreemapZoomable(selectedData))
-else display(makeTreemapNested(selectedData))
+if (vis === 'zoomable treemap') display(makeTreemapZoomable(selectedData, showChanges.length))
+else display(makeTreemapNested(selectedData, showChanges.length))
 ```
 
 ## open data 🔓

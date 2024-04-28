@@ -1,14 +1,22 @@
 // adapted from https://observablehq.com/@d3/nested-treemap
 // ISC License (c) Mike Bostock
 
-import { uid } from "./uid.js"
-import * as d3 from "d3"
+import { uid } from './uid.js'
+import * as d3 from 'd3'
 
-export function makeTreemapNested(data) {
+export function makeTreemapNested(data, showChanges = false) {
     // Specify the chart’s dimensions.
     const width = 928
     const height = 1060
-    const color = d3.scaleSequential([8, 0], d3.interpolateMagma)
+    let color;
+    if (showChanges) {
+        color = a =>
+            a === 'new' ? 'yellow' : d3.scaleSequential([3, -3], d3.interpolateRdBu)(a)
+    }
+    else {
+        color = d3.scaleSequential([8, 0], d3.interpolateMagma)
+    }
+
 
     // Create the treemap layout.
     const treemap = data =>
@@ -21,7 +29,9 @@ export function makeTreemapNested(data) {
             .round(true)(
                 d3
                     .hierarchy(data)
-                    .sum(d => d.value)
+                    .eachAfter(node => {
+                        node.value = node.data.value
+                    })
                     .sort((a, b) => b.value - a.value)
             )
     const root = treemap(data)
@@ -58,19 +68,20 @@ export function makeTreemapNested(data) {
         .attr('transform', d => `translate(${d.x0},${d.y0})`)
 
     const format = d3.format(',d')
+    const formatPercent = a => (a === 'new' ? 'new' : d3.format('+.1%')(a))
     node.append('title').text(
         d =>
             `${d
                 .ancestors()
                 .reverse()
                 .map(d => d.data.name)
-                .join('/')}\n${format(d.value)}`
+                .join('/')}\n${format(d.value)}\n${formatPercent(d.data.change)}`
     )
 
     node
         .append('rect')
         .attr('id', d => (d.nodeUid = uid('node')).id)
-        .attr('fill', d => color(d.height))
+        .attr('fill', d => color(showChanges ? d.data.change : d.height))
         .attr('width', d => d.x1 - d.x0)
         .attr('height', d => d.y1 - d.y0)
 
@@ -84,9 +95,14 @@ export function makeTreemapNested(data) {
         .append('text')
         .attr('clip-path', d => d.clipUid)
         .selectAll('tspan')
-        .data(d => d.data.name.split(/(?=[A-Z][^A-Z])/g).concat(format(d.value)))
+        .data(d =>
+            d.data.name
+                .split(/(?=[A-Z][^A-Z])/g)
+                .concat(format(d.value))
+                .concat(formatPercent(d.data.change))
+        )
         .join('tspan')
-        .attr('fill-opacity', (d, i, nodes) => (i === nodes.length - 1 ? 0.7 : null))
+        .attr('fill-opacity', (d, i, nodes) => (i >= nodes.length - 2 ? 0.7 : null))
         .text(d => d)
 
     node

@@ -33,12 +33,24 @@ const getData = async year => {
         .filter(a => a !== undefined)
         .map(einzelplan => ({
             name: einzelplan,
+            value: data
+                .filter(a => a['einzelplan-text'] === einzelplan)
+                .map(a => a['soll'] || a['soll '])
+                .reduce(sum, 0) * 1000,
             children: data
                 .filter(a => a['einzelplan-text'] === einzelplan)
                 .map(a => a['kapitel-text'])
                 .unique()
                 .map(kapitel => ({
                     name: kapitel,
+                    value: data
+                        .filter(
+                            a =>
+                                a['einzelplan-text'] === einzelplan &&
+                                a['kapitel-text'] === kapitel
+                        )
+                        .map(a => a['soll'] || a['soll '])
+                        .reduce(sum, 0) * 1000,
                     children: data
                         .filter(
                             a =>
@@ -61,17 +73,49 @@ const getData = async year => {
                         }))
                 }))
         }))
-    return hierarchy
+    return {
+        name: `Bundeshaushalt ${year}`,
+        value: hierarchy.map(a => a.value).reduce(sum, 0),
+        children: hierarchy,
+    }
 }
 
 let dataAllYears = new Map()
 for (const year in csvPaths) {
-    dataAllYears.set(year, {
-        name: `Bundeshaushalt ${year}`,
-        children: await getData(year)
-    })
+    dataAllYears.set(year, await getData(year))
 }
 dataAllYears = Object.fromEntries(dataAllYears)
+
+// get change to previous year
+for (let year in dataAllYears) {
+    year = parseInt(year)
+    const prevYear = year - 1
+    if (!dataAllYears[prevYear]) continue
+    dataAllYears[year].change = (dataAllYears[year].value - dataAllYears[prevYear].value) / dataAllYears[prevYear].value
+    for (const key in dataAllYears[year].children) {
+        const einzelplan = dataAllYears[year].children[key]
+        const prevEinzelplan = dataAllYears[prevYear]?.children.find(
+            a => a.name === einzelplan.name
+        )
+        einzelplan.change = prevEinzelplan?.value ? (einzelplan.value - prevEinzelplan.value) / prevEinzelplan.value : "new"
+        for (const key in einzelplan?.children) {
+            const kapitel = einzelplan.children[key]
+            const prevKapitel = prevEinzelplan?.children.find(
+                a => a.name === kapitel.name
+            )
+            kapitel.change = prevKapitel?.value ? (kapitel.value - prevKapitel.value) / prevKapitel.value : "new"
+            for (const key in kapitel?.children) {
+                const titel = kapitel.children[key]
+                const prevTitel = prevKapitel?.children.find(
+                    a => a.name === titel.name
+                )
+
+                titel.change = prevTitel?.value ? (titel.value - prevTitel.value) / prevTitel.value : "new"
+            }
+        }
+    }
+
+}
 
 process.stdout.write(JSON.stringify(dataAllYears, null, 2))
 // fs.writeFileSync(
