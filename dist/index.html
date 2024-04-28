@@ -12,7 +12,7 @@
 <link rel="modulepreload" href="./_observablehq/client.js">
 <link rel="modulepreload" href="./_observablehq/runtime.js">
 <link rel="modulepreload" href="./_observablehq/stdlib.js">
-<link rel="modulepreload" href="./_import/components/treemap-nested.c1ef3f8c.js">
+<link rel="modulepreload" href="./_import/components/treemap-nested.6d9284c3.js">
 <link rel="modulepreload" href="./_import/components/treemap-zoomable.8ab6f871.js">
 <link rel="modulepreload" href="./_import/components/uid.447a988f.js">
 <link rel="modulepreload" href="./_node/d3@7.9.0/index.js">
@@ -58,21 +58,23 @@
 import {define} from "./_observablehq/client.js";
 import {registerFile} from "./_observablehq/stdlib.js";
 
-registerFile("./data/haushalt-via-csv.json", {"name":"./data/haushalt-via-csv.json","mimeType":"application/json","path":"./_file/data/haushalt-via-csv.85b36628.json","lastModified":1713697789751});
+registerFile("./data/haushalt-via-csv.json", {"name":"./data/haushalt-via-csv.json","mimeType":"application/json","path":"./_file/data/haushalt-via-csv.a10ef5fa.json","lastModified":1714342950713});
 
-define({id: "7f319856", inputs: ["FileAttachment","view","Inputs"], outputs: ["makeTreemapNested","makeTreemapZoomable","data","vis","year"], body: async (FileAttachment,view,Inputs) => {
-const [{makeTreemapNested}, {makeTreemapZoomable}] = await Promise.all([import("./_import/components/treemap-nested.c1ef3f8c.js"), import("./_import/components/treemap-zoomable.8ab6f871.js")]);
+define({id: "0d267b58", inputs: ["FileAttachment","view","Inputs"], outputs: ["makeTreemapNested","makeTreemapZoomable","data","vis","year","showChanges"], body: async (FileAttachment,view,Inputs) => {
+const [{makeTreemapNested}, {makeTreemapZoomable}] = await Promise.all([import("./_import/components/treemap-nested.6d9284c3.js"), import("./_import/components/treemap-zoomable.8ab6f871.js")]);
 
 const data = FileAttachment("./data/haushalt-via-csv.json").json()
 const vis = view(Inputs.select(['nested treemap', 'zoomable treemap']))
-const year = view(Inputs.range([2019, 2024], {step:1, value: 2024}));
-return {makeTreemapNested,makeTreemapZoomable,data,vis,year};
+const year = view(Inputs.range([2019, 2024], { step: 1, value: 2024 }))
+const showChanges = view(Inputs.checkbox(['Show change relative to last year']))
+
+return {makeTreemapNested,makeTreemapZoomable,data,vis,year,showChanges};
 }});
 
-define({id: "2814c235", inputs: ["data","year","vis","display","makeTreemapZoomable","makeTreemapNested"], outputs: ["selectedData"], body: (data,year,vis,display,makeTreemapZoomable,makeTreemapNested) => {
+define({id: "58a3bd02", inputs: ["data","year","vis","display","makeTreemapZoomable","showChanges","makeTreemapNested"], outputs: ["selectedData"], body: (data,year,vis,display,makeTreemapZoomable,showChanges,makeTreemapNested) => {
 const selectedData = data[year]
-if (vis === "zoomable treemap") display(makeTreemapZoomable(selectedData))
-else display(makeTreemapNested(selectedData))
+if (vis === 'zoomable treemap') display(makeTreemapZoomable(selectedData, showChanges.length))
+else display(makeTreemapNested(selectedData, showChanges.length))
 return {selectedData};
 }});
 
@@ -80,8 +82,29 @@ return {selectedData};
 <div id="observablehq-center">
 <main id="observablehq-main" class="observablehq">
 <h1 id="bundeshaushalt.dev-%F0%9F%87%A9%F0%9F%87%AA%F0%9F%92%B0" tabindex="-1"><a class="observablehq-header-anchor" href="#bundeshaushalt.dev-%F0%9F%87%A9%F0%9F%87%AA%F0%9F%92%B0">bundeshaushalt.dev 🇩🇪💰</a></h1>
-<div id="cell-7f319856" class="observablehq observablehq--block"></div>
-<div id="cell-2814c235" class="observablehq observablehq--block"></div>
+<div id="cell-0d267b58" class="observablehq observablehq--block"></div>
+<!-- ```js
+const getChildren = a =>
+  new Set(
+    a['children']
+      .map(a => a.name) //.children.map(b => b.children.map(c => c.name)))
+    //   .flat(2)
+  )
+const a = getChildren(data[2024])
+const b = getChildren(data[2023])
+// get intersection
+function intersection(set1, set2) {
+  return new Set([...set1].filter(x => set2.has(x)))
+}
+display(intersection(a, b))
+// get difference
+function difference(set1, set2) {
+  return new Set([...set1].filter(x => !set2.has(x)))
+}
+display(difference(a, b))
+display(difference(b, a))
+``` -->
+<div id="cell-58a3bd02" class="observablehq observablehq--block"></div>
 <h2 id="open-data-%F0%9F%94%93" tabindex="-1"><a class="observablehq-header-anchor" href="#open-data-%F0%9F%94%93">open data 🔓</a></h2>
 <ul>
 <li><a href="https://github.com/bundesAPI/bundeshaushalt-api" target="_blank" rel="noopener noreferrer">use the public api</a></li>
