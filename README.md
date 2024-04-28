@@ -6,6 +6,7 @@ see also [bundeshaushalt-api](https://github.com/bundesAPI/bundeshaushalt-api)
 
 - [x] support for multiple years
 - [ ] bar chart with comparison over time
+- [ ] [color-code changes over time](https://budget.g0v.it/)
 - [ ] data table
 - [ ] search
 - [ ] integrate more fine-grained data
