@@ -3,8 +3,9 @@
 
 import { uid } from "./uid.js"
 import * as d3 from "d3"
+import { hierarchy, format, formatPercent, name, color } from './shared.js'
 
-export function makeTreemapZoomable(data) {
+export function makeTreemapZoomable(data, showChanges = false) {
     // Specify the chart’s dimensions.
     const width = 928
     const height = 924
@@ -22,24 +23,11 @@ export function makeTreemapZoomable(data) {
     }
 
     // Compute the layout.
-    const hierarchy = d3
-        .hierarchy(data)
-        .sum(d => d.value)
-        .sort((a, b) => b.value - a.value)
-    const root = d3.treemap().tile(tile)(hierarchy)
+    const root = d3.treemap().tile(tile)(hierarchy(data))
 
     // Create the scales.
     const x = d3.scaleLinear().rangeRound([0, width])
     const y = d3.scaleLinear().rangeRound([0, height])
-
-    // Formatting utilities.
-    const format = d3.format(',d')
-    const name = d =>
-        d
-            .ancestors()
-            .reverse()
-            .map(d => d.data.name)
-            .join('/')
 
     // Create the SVG container.
     const svg = d3
@@ -61,12 +49,12 @@ export function makeTreemapZoomable(data) {
             .attr('cursor', 'pointer')
             .on('click', (event, d) => (d === root ? zoomout(root) : zoomin(d)))
 
-        node.append('title').text(d => `${name(d)}\n${format(d.value)}`)
+        node.append('title').text(d => `${name(d)}\n${format(d.value)}\n${formatPercent(d.data.change)}`)
 
         node
             .append('rect')
             .attr('id', d => (d.leafUid = uid('leaf')).id)
-            .attr('fill', d => (d === root ? '#fff' : d.children ? '#ccc' : '#ddd'))
+            .attr('fill', d => (d === root ? '#fff' : color(d, showChanges)))
             .attr('stroke', '#fff')
 
         node
@@ -81,7 +69,10 @@ export function makeTreemapZoomable(data) {
             .attr('font-weight', d => (d === root ? 'bold' : null))
             .selectAll('tspan')
             .data(d =>
-                (d === root ? name(d) : d.data.name).split("/").concat(format(d.value))
+                (d === root ? name(d) : d.data.name)
+                    .split("/")
+                    .concat(format(d.value))
+                    .concat(formatPercent(d.data.change))
             )
             .join('tspan')
             .attr('x', 3)
