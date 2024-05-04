@@ -29,12 +29,14 @@ export function makeTreemapZoomable(data, showChanges = false) {
     const x = d3.scaleLinear().rangeRound([0, width])
     const y = d3.scaleLinear().rangeRound([0, height])
 
+    const rootHeight = 55
+
     // Create the SVG container.
     const svg = d3
         .create('svg')
-        .attr('viewBox', [0.5, -50.5, width, height + 50])
+        .attr('viewBox', [0.5, -rootHeight - 0.5, width, height + rootHeight])
         .attr('width', width)
-        .attr('height', height + 50)
+        .attr('height', height + rootHeight)
         .attr('style', 'max-width: 100%; height: auto;')
         .style('font', '10px sans-serif')
 
@@ -54,7 +56,7 @@ export function makeTreemapZoomable(data, showChanges = false) {
         node
             .append('rect')
             .attr('id', d => (d.leafUid = uid('leaf')).id)
-            .attr('fill', d => (d === root ? '#fff' : color(d, showChanges)))
+            .attr('fill', d => (d === root ? '#ddd' : color(d, showChanges)))
             .attr('stroke', '#fff')
 
         node
@@ -95,11 +97,11 @@ export function makeTreemapZoomable(data, showChanges = false) {
         group
             .selectAll('g')
             .attr('transform', d =>
-                d === root ? `translate(0,-50)` : `translate(${x(d.x0)},${y(d.y0)})`
+                d === root ? `translate(0,-${rootHeight})` : `translate(${x(d.x0)},${y(d.y0)})`
             )
             .select('rect')
             .attr('width', d => (d === root ? width : x(d.x1) - x(d.x0)))
-            .attr('height', d => (d === root ? 50 : y(d.y1) - y(d.y0)))
+            .attr('height', d => (d === root ? rootHeight : y(d.y1) - y(d.y0)))
     }
 
     // When zooming in, draw the new nodes on top, and fade them in.
