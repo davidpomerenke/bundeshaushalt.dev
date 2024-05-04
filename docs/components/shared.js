@@ -30,11 +30,3 @@ export const color = (d, showChanges) => showChanges
                 : d3.scaleSequential([4, -4], d3.interpolateRdBu)(log2(d.data.change))
         : "white"
     : d3.scaleSequential([8, 0], d3.interpolateMagma)(d.height)
-
-
-const luminance = color_ => {
-    const rgb = d3.color(color_);
-    return (0.2126 * rgb.r + 0.7152 * rgb.g + 0.0722 * rgb.b) / 255;
-}
-
-export const textColor = backgroundColor => luminance(backgroundColor) > 0.5 ? 'black' : 'white';  
