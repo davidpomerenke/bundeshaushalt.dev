@@ -3,8 +3,9 @@
 
 import { uid } from "./uid.447a988f.js"
 import * as d3 from "../../_node/d3@7.9.0/index.js"
+import { hierarchy, format, formatPercent, name, color } from "./shared.5f5f9905.js"
 
-export function makeTreemapZoomable(data) {
+export function makeTreemapZoomable(data, showChanges = false) {
     // Specify the chart’s dimensions.
     const width = 928
     const height = 924
@@ -22,31 +23,20 @@ export function makeTreemapZoomable(data) {
     }
 
     // Compute the layout.
-    const hierarchy = d3
-        .hierarchy(data)
-        .sum(d => d.value)
-        .sort((a, b) => b.value - a.value)
-    const root = d3.treemap().tile(tile)(hierarchy)
+    const root = d3.treemap().tile(tile)(hierarchy(data))
 
     // Create the scales.
     const x = d3.scaleLinear().rangeRound([0, width])
     const y = d3.scaleLinear().rangeRound([0, height])
 
-    // Formatting utilities.
-    const format = d3.format(',d')
-    const name = d =>
-        d
-            .ancestors()
-            .reverse()
-            .map(d => d.data.name)
-            .join('/')
+    const rootHeight = 55
 
     // Create the SVG container.
     const svg = d3
         .create('svg')
-        .attr('viewBox', [0.5, -50.5, width, height + 50])
+        .attr('viewBox', [0.5, -rootHeight - 0.5, width, height + rootHeight])
         .attr('width', width)
-        .attr('height', height + 50)
+        .attr('height', height + rootHeight)
         .attr('style', 'max-width: 100%; height: auto;')
         .style('font', '10px sans-serif')
 
@@ -61,12 +51,12 @@ export function makeTreemapZoomable(data) {
             .attr('cursor', 'pointer')
             .on('click', (event, d) => (d === root ? zoomout(root) : zoomin(d)))
 
-        node.append('title').text(d => `${name(d)}\n${format(d.value)}`)
+        node.append('title').text(d => `${name(d)}\n${format(d.value)}\n${formatPercent(d.data.change)}`)
 
         node
             .append('rect')
             .attr('id', d => (d.leafUid = uid('leaf')).id)
-            .attr('fill', d => (d === root ? '#fff' : d.children ? '#ccc' : '#ddd'))
+            .attr('fill', d => (d === root ? '#ddd' : color(d, showChanges)))
             .attr('stroke', '#fff')
 
         node
@@ -81,7 +71,10 @@ export function makeTreemapZoomable(data) {
             .attr('font-weight', d => (d === root ? 'bold' : null))
             .selectAll('tspan')
             .data(d =>
-                (d === root ? name(d) : d.data.name).split("/").concat(format(d.value))
+                (d === root ? name(d) : d.data.name)
+                    .split("/")
+                    .concat(format(d.value))
+                    .concat(formatPercent(d.data.change))
             )
             .join('tspan')
             .attr('x', 3)
@@ -104,11 +97,11 @@ export function makeTreemapZoomable(data) {
         group
             .selectAll('g')
             .attr('transform', d =>
-                d === root ? `translate(0,-50)` : `translate(${x(d.x0)},${y(d.y0)})`
+                d === root ? `translate(0,-${rootHeight})` : `translate(${x(d.x0)},${y(d.y0)})`
             )
             .select('rect')
             .attr('width', d => (d === root ? width : x(d.x1) - x(d.x0)))
-            .attr('height', d => (d === root ? 50 : y(d.y1) - y(d.y0)))
+            .attr('height', d => (d === root ? rootHeight : y(d.y1) - y(d.y0)))
     }
 
     // When zooming in, draw the new nodes on top, and fade them in.

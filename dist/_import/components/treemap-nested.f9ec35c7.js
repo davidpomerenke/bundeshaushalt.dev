@@ -3,19 +3,13 @@
 
 import { uid } from "./uid.447a988f.js"
 import * as d3 from "../../_node/d3@7.9.0/index.js"
+import { hierarchy, format, formatPercent, name, color } from "./shared.5f5f9905.js"
 
 export function makeTreemapNested(data, showChanges = false) {
     // Specify the chart’s dimensions.
     const width = 928
     const height = 1060
-    let color;
-    if (showChanges) {
-        color = a =>
-            a === 'new' ? 'yellow' : d3.scaleSequential([3, -3], d3.interpolateRdBu)(a)
-    }
-    else {
-        color = d3.scaleSequential([8, 0], d3.interpolateMagma)
-    }
+
 
 
     // Create the treemap layout.
@@ -26,14 +20,7 @@ export function makeTreemapNested(data, showChanges = false) {
             .paddingOuter(3)
             .paddingTop(19)
             .paddingInner(1)
-            .round(true)(
-                d3
-                    .hierarchy(data)
-                    .eachAfter(node => {
-                        node.value = node.data.value
-                    })
-                    .sort((a, b) => b.value - a.value)
-            )
+            .round(true)(hierarchy(data))
     const root = treemap(data)
 
     // Create the SVG container.
@@ -67,21 +54,16 @@ export function makeTreemapNested(data, showChanges = false) {
         .join('g')
         .attr('transform', d => `translate(${d.x0},${d.y0})`)
 
-    const format = d3.format(',d')
-    const formatPercent = a => (a === 'new' ? 'new' : d3.format('+.1%')(a))
+
+
     node.append('title').text(
-        d =>
-            `${d
-                .ancestors()
-                .reverse()
-                .map(d => d.data.name)
-                .join('/')}\n${format(d.value)}\n${formatPercent(d.data.change)}`
+        d => `${name(d)}\n${format(d.value)}\n${formatPercent(d.data.change)}`
     )
 
     node
         .append('rect')
         .attr('id', d => (d.nodeUid = uid('node')).id)
-        .attr('fill', d => color(showChanges ? d.data.change : d.height))
+        .attr('fill', d => color(d, showChanges))
         .attr('width', d => d.x1 - d.x0)
         .attr('height', d => d.y1 - d.y0)
 

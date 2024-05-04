@@ -12,9 +12,10 @@
 <link rel="modulepreload" href="./_observablehq/client.js">
 <link rel="modulepreload" href="./_observablehq/runtime.js">
 <link rel="modulepreload" href="./_observablehq/stdlib.js">
-<link rel="modulepreload" href="./_import/components/treemap-nested.6d9284c3.js">
-<link rel="modulepreload" href="./_import/components/treemap-zoomable.8ab6f871.js">
+<link rel="modulepreload" href="./_import/components/treemap-nested.f9ec35c7.js">
+<link rel="modulepreload" href="./_import/components/treemap-zoomable.482b40d1.js">
 <link rel="modulepreload" href="./_import/components/uid.447a988f.js">
+<link rel="modulepreload" href="./_import/components/shared.5f5f9905.js">
 <link rel="modulepreload" href="./_node/d3@7.9.0/index.js">
 <link rel="modulepreload" href="./_observablehq/stdlib/inputs.js">
 <link rel="modulepreload" href="./_npm/htl@0.3.1/_esm.js">
@@ -61,7 +62,7 @@ import {registerFile} from "./_observablehq/stdlib.js";
 registerFile("./data/haushalt-via-csv.json", {"name":"./data/haushalt-via-csv.json","mimeType":"application/json","path":"./_file/data/haushalt-via-csv.86e82ef0.json","lastModified":1714767203907});
 
 define({id: "0d267b58", inputs: ["FileAttachment","view","Inputs"], outputs: ["makeTreemapNested","makeTreemapZoomable","data","vis","year","showChanges"], body: async (FileAttachment,view,Inputs) => {
-const [{makeTreemapNested}, {makeTreemapZoomable}] = await Promise.all([import("./_import/components/treemap-nested.6d9284c3.js"), import("./_import/components/treemap-zoomable.8ab6f871.js")]);
+const [{makeTreemapNested}, {makeTreemapZoomable}] = await Promise.all([import("./_import/components/treemap-nested.f9ec35c7.js"), import("./_import/components/treemap-zoomable.482b40d1.js")]);
 
 const data = FileAttachment("./data/haushalt-via-csv.json").json()
 const vis = view(Inputs.select(['nested treemap', 'zoomable treemap']))
